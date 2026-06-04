@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 startBtn.addEventListener('click', startGame);
 retryBtn.addEventListener('click', startGame);
 homeBtn.addEventListener('click', goHome);
-userInput.addEventListener('input', handleInput);
+userInput.addEventListener('keydown', handleKeyDown);
 
 // Start game
 function startGame() {
@@ -115,12 +115,11 @@ function showNewWord() {
     userInput.value = '';
 }
 
-// Handle input
-function handleInput(e) {
-    const input = e.target.value;
-
+// Handle key down for space and enter
+function handleKeyDown(e) {
     // Submit on space or enter
-    if (input.includes(' ') || input.endsWith('\n')) {
+    if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
         checkWord();
         userInput.value = '';
     }
