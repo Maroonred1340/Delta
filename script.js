@@ -28,7 +28,9 @@ let gameState = {
     totalWordsShown: 0,
     currentWord: '',
     bestScore: localStorage.getItem('bestScore') || 0,
-    stageResults: []
+    stageResults: [],
+    stageWordCount: 0,
+    wordsNeededForDelta: 5
 };
 
 // DOM elements
@@ -72,7 +74,9 @@ function startGame() {
         totalWordsShown: 0,
         currentWord: '',
         bestScore: gameState.bestScore,
-        stageResults: []
+        stageResults: [],
+        stageWordCount: 0,
+        wordsNeededForDelta: 5
     };
 
     // Switch screens
@@ -99,7 +103,13 @@ function showStageIndicator() {
 
 // Show new word
 function showNewWord() {
-    gameState.currentWord = words[Math.floor(Math.random() * words.length)];
+    // Check if we need to show "Delta"
+    if (gameState.stageWordCount >= gameState.wordsNeededForDelta) {
+        gameState.currentWord = 'Delta';
+    } else {
+        gameState.currentWord = words[Math.floor(Math.random() * words.length)];
+    }
+    
     gameState.totalWordsShown++;
     currentWordDisplay.textContent = gameState.currentWord;
     userInput.value = '';
@@ -109,8 +119,8 @@ function showNewWord() {
 function handleInput(e) {
     const input = e.target.value;
 
-    // Submit on space
-    if (input.includes(' ')) {
+    // Submit on space or enter
+    if (input.includes(' ') || input.endsWith('\n')) {
         checkWord();
         userInput.value = '';
     }
@@ -122,6 +132,13 @@ function checkWord() {
 
     if (input === gameState.currentWord) {
         gameState.correctWords++;
+        gameState.stageWordCount++;
+        
+        // If correct answer is "Delta", stage is complete
+        if (gameState.currentWord === 'Delta') {
+            completeStage();
+            return;
+        }
     } else if (input !== '') {
         gameState.wrongWords++;
     }
@@ -168,6 +185,7 @@ function completeStage() {
         gameState.correctWords = 0;
         gameState.wrongWords = 0;
         gameState.totalWordsShown = 0;
+        gameState.stageWordCount = 0;
         
         updateDisplay();
         showNewWord();
