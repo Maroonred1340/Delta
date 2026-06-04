@@ -122,6 +122,9 @@ function handleKeyDown(e) {
         e.preventDefault();
         checkWord();
         userInput.value = '';
+    } else if (e.key === 'Backspace') {
+        // Allow backspace to work normally for deleting characters
+        return;
     }
 }
 
