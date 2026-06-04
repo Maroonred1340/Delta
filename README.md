@@ -1,72 +1,81 @@
-## ⌨️ Delta - 타이핑 게임
+## ⌨️ Delta - Typing Game
 
-나의 타이핑 속도와 정확도를 테스트하는 미니게임입니다!
+A mini-game to test your typing speed and accuracy!
 
-### 🎮 게임 설명
+### 🎮 Game Description
 
-- **게임 방식**: 화면에 표시되는 한글 단어를 빠르게 입력합니다.
-- **시간 제한**: 60초 내에 최대한 많은 단어를 정확하게 입력하세요.
-- **점수 기준**: WPM (Words Per Minute) - 분당 타이핑한 단어의 개수
-- **정확도**: 올바르게 입력한 단어의 비율
+- **Game Mode**: Type English words displayed on the screen as quickly as possible.
+- **Stage System**: Complete multiple stages by typing random words, with "Delta" as the final word to complete each stage.
+- **Score Metric**: Words - the total number of words typed correctly
+- **Accuracy**: The percentage of words typed correctly
 
-### 📊 주요 기능
+### 📊 Key Features
 
-- ⚡ **실시간 WPM 계산**: 게임 중에 현재 타이핑 속도 확인
-- 📈 **정확도 측정**: 타이핑 정확도 실시간 표시
-- 🏆 **최고 기록 저장**: 로컬 스토리지에 최고 WPM 기록 저장
-- 📱 **반응형 디자인**: 모든 기기에서 플레이 가능
-- 🎨 **모던 UI**: 어두운 테마의 세련된 인터페이스
+- ⚡ **Real-time Word Counter**: Check how many words you've typed correctly during the game
+- 📈 **Accuracy Measurement**: Real-time accuracy display
+- 🏆 **High Score Tracking**: Save your best word count to local storage
+- 📱 **Responsive Design**: Playable on all devices
+- 🎨 **Modern UI**: Sleek dark-themed interface
+- 🎯 **Stage System**: Multiple difficulty levels (Easy, Normal, Hard) with progressive challenges
 
-### 🚀 시작하기
+### 🚀 Getting Started
 
-1. `index.html`을 웹 브라우저에서 열기
-2. **"게임 시작"** 버튼 클릭
-3. 표시되는 단어를 입력하고 **스페이스바** 또는 **엔터**로 제출
-4. 60초 동안 최대한 많은 단어 입력!
+1. Open `index.html` in your web browser
+2. Click the **"Start Game"** button
+3. Type the displayed words and submit with **Spacebar** or **Enter**
+4. Complete each stage by typing random words until you see **"Delta"** - that's the final word you need to type to finish the stage
+5. Progress through all stages to complete the game!
 
-### 📝 조작 방법
+### 📝 Controls
 
-| 키 | 기능 |
+| Key | Function |
 |---|---|
-| 텍스트 입력 | 단어 입력 |
-| Space / Enter | 단어 제출 |
-| Tab | 입력칸 포커스 (필요시) |
+| Text Input | Enter words |
+| Space / Enter | Submit word |
+| Tab | Focus input field (if needed) |
 
-### 🎯 팁
+### 🎯 Tips
 
-- 정확도를 먼저 생각한 후 속도를 올려보세요
-- 자주 연습하면 WPM이 점점 올라갑니다
-- 최고 기록을 갱신해보세요! 🏅
+- Focus on accuracy first, then work on improving speed
+- Regular practice will gradually increase your word count
+- Each stage ends with "Delta" - type it correctly to move to the next level
+- Challenge yourself to beat your high score! 🏅
 
-### 🔧 기술 스택
+### 🔧 Tech Stack
 
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Storage**: LocalStorage (최고 기록 저장)
-- **Design**: Responsive 모바일 친화 디자인
+- **Storage**: LocalStorage (for high score storage)
+- **Design**: Responsive mobile-friendly design
 
-### 📂 파일 구조
+### 📂 File Structure
 
 ```
 Delta/
-├── index.html     # HTML 구조
-├── style.css      # 스타일링
-├── script.js      # 게임 로직
-└── README.md      # 이 파일
+├── index.html     # HTML structure
+├── style.css      # Styling
+├── script.js      # Game logic with stage system
+└── README.md      # This file
 ```
 
-### 🌟 향후 업데이트 예정
+### 🌟 Stage Levels
 
-- [ ] 난이도 레벨 추가 (쉬움, 보통, 어려움)
-- [ ] 다국어 지원 (영어, 일본어 등)
-- [ ] 리더보드 (온라인 순위)
-- [ ] 게임 모드 추가 (시간 제한, 단어 수 제한 등)
-- [ ] 효과음 및 배경음악
-- [ ] 통계 분석 페이지
+1. **Easy (Stage 1)**: 20 seconds - Type words then "Delta" to complete
+2. **Normal (Stage 2)**: 30 seconds - More challenging pace
+3. **Hard (Stage 3)**: 40 seconds - Test your limits
 
-### 📄 라이선스
+### 🌟 Planned Updates
+
+- [ ] Add more difficulty levels
+- [ ] Multi-language support
+- [ ] Leaderboard (online rankings)
+- [ ] Additional game modes (time challenges, word limits, etc.)
+- [ ] Sound effects and background music
+- [ ] Statistics and performance analysis page
+
+### 📄 License
 
 MIT License
 
 ---
 
-**즐거운 타이핑 게임을 즐기세요!** ⌨️✨
+**Enjoy the typing game!** ⌨️✨
