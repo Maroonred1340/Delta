@@ -1,85 +1,85 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delta - 타이핑 게임</title>
+    <title>Delta - Typing Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- 메인 화면 -->
+        <!-- Main Screen -->
         <div id="mainScreen" class="screen active">
             <div class="game-title">
                 <h1>⌨️ DELTA</h1>
-                <p>타이핑 속도 게임</p>
+                <p>Typing Speed Game</p>
             </div>
-            <button id="startBtn" class="btn-primary">게임 시작</button>
+            <button id="startBtn" class="btn-primary">Start Game</button>
             <div class="best-score">
-                <p>최고 기록: <span id="bestScore">0</span> WPM</p>
+                <p>Best Score: <span id="bestScore">0</span> Words</p>
             </div>
         </div>
 
-        <!-- 게임 화면 -->
+        <!-- Game Screen -->
         <div id="gameScreen" class="screen">
             <div class="game-header">
                 <div class="timer">
-                    <span>시간:</span>
-                    <span id="timer">60</span>초
+                    <span>Time:</span>
+                    <span id="timer">60</span>s
                 </div>
                 <div class="score">
-                    <span>WPM:</span>
+                    <span>Words:</span>
                     <span id="wpm">0</span>
                 </div>
                 <div class="accuracy">
-                    <span>정확도:</span>
+                    <span>Accuracy:</span>
                     <span id="accuracy">100</span>%
                 </div>
             </div>
 
             <div class="word-display">
-                <p id="currentWord">단어</p>
+                <p id="currentWord">Word</p>
             </div>
 
             <div class="input-area">
                 <input 
                     type="text" 
                     id="userInput" 
-                    placeholder="여기에 입력하세요..."
+                    placeholder="Type here..."
                     autocomplete="off"
                 >
             </div>
 
             <div class="stats">
-                <p>맞춘 단어: <span id="correctCount">0</span></p>
-                <p>틀린 단어: <span id="wrongCount">0</span></p>
+                <p>Correct: <span id="correctCount">0</span></p>
+                <p>Wrong: <span id="wrongCount">0</span></p>
             </div>
         </div>
 
-        <!-- 결과 화면 -->
+        <!-- Result Screen -->
         <div id="resultScreen" class="screen">
             <div class="result-content">
-                <h2>게임 종료!</h2>
+                <h2>Game Over!</h2>
                 <div class="result-stats">
                     <div class="stat-item">
-                        <p class="stat-label">최종 WPM</p>
+                        <p class="stat-label">Final Words</p>
                         <p class="stat-value" id="finalWPM">0</p>
                     </div>
                     <div class="stat-item">
-                        <p class="stat-label">정확도</p>
+                        <p class="stat-label">Accuracy</p>
                         <p class="stat-value" id="finalAccuracy">0%</p>
                     </div>
                     <div class="stat-item">
-                        <p class="stat-label">맞춘 단어</p>
+                        <p class="stat-label">Correct</p>
                         <p class="stat-value" id="finalCorrect">0</p>
                     </div>
                     <div class="stat-item">
-                        <p class="stat-label">틀린 단어</p>
+                        <p class="stat-label">Wrong</p>
                         <p class="stat-value" id="finalWrong">0</p>
                     </div>
                 </div>
-                <button id="retryBtn" class="btn-primary">다시 하기</button>
-                <button id="homeBtn" class="btn-secondary">메인으로</button>
+                <button id="retryBtn" class="btn-primary">Try Again</button>
+                <button id="homeBtn" class="btn-secondary">Home</button>
             </div>
         </div>
     </div>
