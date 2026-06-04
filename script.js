@@ -113,6 +113,7 @@ function showNewWord() {
     gameState.totalWordsShown++;
     currentWordDisplay.textContent = gameState.currentWord;
     userInput.value = '';
+    userInput.focus();
 }
 
 // Handle key down for space and enter
@@ -120,33 +121,24 @@ function handleKeyDown(e) {
     // Submit on space or enter
     if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
-        checkWord();
-        userInput.value = '';
-    } else if (e.key === 'Backspace') {
-        // Allow backspace to work normally for deleting characters
-        return;
-    }
-}
-
-// Check word
-function checkWord() {
-    const input = userInput.value.trim();
-
-    if (input === gameState.currentWord) {
-        gameState.correctWords++;
-        gameState.stageWordCount++;
+        const input = userInput.value.trim();
         
-        // If correct answer is "Delta", stage is complete
-        if (gameState.currentWord === 'Delta') {
-            completeStage();
-            return;
+        if (input === gameState.currentWord) {
+            gameState.correctWords++;
+            gameState.stageWordCount++;
+            
+            // If correct answer is "Delta", stage is complete
+            if (gameState.currentWord === 'Delta') {
+                completeStage();
+                return;
+            }
+        } else if (input !== '') {
+            gameState.wrongWords++;
         }
-    } else if (input !== '') {
-        gameState.wrongWords++;
+        
+        updateDisplay();
+        showNewWord();
     }
-
-    updateDisplay();
-    showNewWord();
 }
 
 // Timer
