@@ -1,27 +1,37 @@
-// 게임 데이터
+// Game data
 const words = [
-    '사과', '바나나', '포도', '딸기', '수박', '귤', '복숭아', '배',
-    '자동차', '버스', '기차', '비행기', '배', '오토바이', '택시', '트럭',
-    '집', '건물', '학교', '병원', '은행', '가게', '영화관', '카페',
-    '책', '펜', '종이', '노트', '책상', '의자', '창문', '문',
-    '날씨', '하늘', '구름', '비', '눈', '바람', '번개', '무지개',
-    '컴퓨터', '마우스', '키보드', '모니터', '프린터', '스피커', '헤드폰', '폰',
-    '음악', '노래', '영화', '게임', '스포츠', '요리', '그림', '춤',
-    '기쁨', '슬픔', '행복', '분노', '놀람', '두려움', '사랑', '미움'
+    'apple', 'banana', 'grape', 'strawberry', 'watermelon', 'orange', 'peach', 'pear',
+    'car', 'bus', 'train', 'airplane', 'ship', 'motorcycle', 'taxi', 'truck',
+    'house', 'building', 'school', 'hospital', 'bank', 'store', 'cinema', 'cafe',
+    'book', 'pen', 'paper', 'notebook', 'desk', 'chair', 'window', 'door',
+    'weather', 'sky', 'cloud', 'rain', 'snow', 'wind', 'thunder', 'rainbow',
+    'computer', 'mouse', 'keyboard', 'monitor', 'printer', 'speaker', 'headphone', 'phone',
+    'music', 'song', 'movie', 'game', 'sport', 'cooking', 'art', 'dance',
+    'happy', 'sad', 'joy', 'angry', 'surprise', 'fear', 'love', 'hate'
 ];
 
-// 게임 상태
+// Stage settings (time in seconds)
+const stages = [
+    { level: 1, time: 20, name: 'Easy' },
+    { level: 2, time: 30, name: 'Normal' },
+    { level: 3, time: 40, name: 'Hard' }
+];
+
+// Game state
 let gameState = {
     isRunning: false,
-    timeRemaining: 60,
+    currentStage: 0,
+    stageTime: 0,
+    timeRemaining: 0,
     correctWords: 0,
     wrongWords: 0,
     totalWordsShown: 0,
     currentWord: '',
-    bestScore: localStorage.getItem('bestScore') || 0
+    bestScore: localStorage.getItem('bestScore') || 0,
+    stageResults: []
 };
 
-// DOM 요소
+// DOM elements
 const startBtn = document.getElementById('startBtn');
 const retryBtn = document.getElementById('retryBtn');
 const homeBtn = document.getElementById('homeBtn');
@@ -38,46 +48,56 @@ const mainScreen = document.getElementById('mainScreen');
 const gameScreen = document.getElementById('gameScreen');
 const resultScreen = document.getElementById('resultScreen');
 
-// 초기화
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     bestScoreDisplay.textContent = gameState.bestScore;
 });
 
-// 이벤트 리스너
+// Event listeners
 startBtn.addEventListener('click', startGame);
 retryBtn.addEventListener('click', startGame);
 homeBtn.addEventListener('click', goHome);
 userInput.addEventListener('input', handleInput);
 
-// 게임 시작
+// Start game
 function startGame() {
-    // 상태 초기화
+    // Reset state
     gameState = {
         isRunning: true,
-        timeRemaining: 60,
+        currentStage: 0,
+        stageTime: stages[0].time,
+        timeRemaining: stages[0].time,
         correctWords: 0,
         wrongWords: 0,
         totalWordsShown: 0,
         currentWord: '',
-        bestScore: gameState.bestScore
+        bestScore: gameState.bestScore,
+        stageResults: []
     };
 
-    // 화면 전환
+    // Switch screens
     mainScreen.classList.remove('active');
     resultScreen.classList.remove('active');
     gameScreen.classList.add('active');
 
-    // UI 초기화
+    // Initialize UI
     userInput.value = '';
     userInput.focus();
     updateDisplay();
     showNewWord();
+    showStageIndicator();
 
-    // 타이머 시작
+    // Start timer
     startTimer();
 }
 
-// 새로운 단어 표시
+// Show stage indicator
+function showStageIndicator() {
+    const stage = stages[gameState.currentStage];
+    console.log(`\n=== DELTA: Stage ${stage.level} - ${stage.name} Started! ===\n`);
+}
+
+// Show new word
 function showNewWord() {
     gameState.currentWord = words[Math.floor(Math.random() * words.length)];
     gameState.totalWordsShown++;
@@ -85,18 +105,18 @@ function showNewWord() {
     userInput.value = '';
 }
 
-// 입력 처리
+// Handle input
 function handleInput(e) {
     const input = e.target.value;
 
-    // 스페이스바로 제출
+    // Submit on space
     if (input.includes(' ')) {
         checkWord();
         userInput.value = '';
     }
 }
 
-// 단어 확인
+// Check word
 function checkWord() {
     const input = userInput.value.trim();
 
@@ -110,7 +130,7 @@ function checkWord() {
     showNewWord();
 }
 
-// 타이머
+// Timer
 function startTimer() {
     const timerInterval = setInterval(() => {
         gameState.timeRemaining--;
@@ -118,63 +138,109 @@ function startTimer() {
 
         if (gameState.timeRemaining <= 0) {
             clearInterval(timerInterval);
-            endGame();
+            completeStage();
         }
     }, 1000);
 }
 
-// 게임 종료
+// Complete stage
+function completeStage() {
+    const stage = stages[gameState.currentStage];
+    const wpm = gameState.correctWords;
+    
+    // Save stage results
+    gameState.stageResults.push({
+        level: stage.level,
+        correct: gameState.correctWords,
+        wrong: gameState.wrongWords,
+        wpm: wpm
+    });
+
+    console.log(`\n=== DELTA: Stage ${stage.level} Completed! ===`);
+    console.log(`Correct: ${gameState.correctWords}, Wrong: ${gameState.wrongWords}\n`);
+
+    // Check if next stage exists
+    if (gameState.currentStage < stages.length - 1) {
+        // Move to next stage
+        gameState.currentStage++;
+        gameState.stageTime = stages[gameState.currentStage].time;
+        gameState.timeRemaining = stages[gameState.currentStage].time;
+        gameState.correctWords = 0;
+        gameState.wrongWords = 0;
+        gameState.totalWordsShown = 0;
+        
+        updateDisplay();
+        showNewWord();
+        showStageIndicator();
+        startTimer();
+    } else {
+        // All stages completed
+        endGame();
+    }
+}
+
+// End game
 function endGame() {
     gameState.isRunning = false;
     userInput.disabled = true;
 
-    // 최고 기록 갱신
-    const wpm = Math.round((gameState.correctWords / 60) * 60);
-    if (wpm > gameState.bestScore) {
-        gameState.bestScore = wpm;
+    // Update best score (based on total correct words)
+    const totalCorrect = gameState.stageResults.reduce((sum, stage) => sum + stage.correct, 0);
+    if (totalCorrect > gameState.bestScore) {
+        gameState.bestScore = totalCorrect;
         localStorage.setItem('bestScore', gameState.bestScore);
     }
 
-    // 결과 화면 표시
+    console.log(`\n=== DELTA: Game Over! ===\n`);
+    
+    // Show results
     showResults();
 }
 
-// 결과 표시
+// Show results
 function showResults() {
-    const wpm = Math.round((gameState.correctWords / 60) * 60);
-    const accuracy = gameState.totalWordsShown > 0 
-        ? Math.round((gameState.correctWords / gameState.totalWordsShown) * 100)
-        : 0;
+    const totalCorrect = gameState.stageResults.reduce((sum, stage) => sum + stage.correct, 0);
+    const totalWrong = gameState.stageResults.reduce((sum, stage) => sum + stage.wrong, 0);
+    const totalShown = totalCorrect + totalWrong || 1;
+    const accuracy = Math.round((totalCorrect / totalShown) * 100);
 
-    document.getElementById('finalWPM').textContent = wpm;
+    document.getElementById('finalWPM').textContent = totalCorrect;
     document.getElementById('finalAccuracy').textContent = accuracy + '%';
-    document.getElementById('finalCorrect').textContent = gameState.correctWords;
-    document.getElementById('finalWrong').textContent = gameState.wrongWords;
+    document.getElementById('finalCorrect').textContent = totalCorrect;
+    document.getElementById('finalWrong').textContent = totalWrong;
 
     gameScreen.classList.remove('active');
     resultScreen.classList.add('active');
     userInput.disabled = false;
+    
+    console.log(`Total Correct: ${totalCorrect}, Accuracy: ${accuracy}%`);
+    console.log(`\n=== DELTA ===\n`);
 }
 
-// UI 업데이트
+// Update display
 function updateDisplay() {
-    const wpm = gameState.timeRemaining > 0 
-        ? Math.round((gameState.correctWords / (60 - gameState.timeRemaining)) * 60)
-        : 0;
     const accuracy = gameState.totalWordsShown > 0
         ? Math.round((gameState.correctWords / gameState.totalWordsShown) * 100)
         : 100;
 
-    wpmDisplay.textContent = isNaN(wpm) ? 0 : wpm;
+    const stage = stages[gameState.currentStage];
+    
+    wpmDisplay.textContent = gameState.correctWords;
     accuracyDisplay.textContent = accuracy;
     correctCountDisplay.textContent = gameState.correctWords;
     wrongCountDisplay.textContent = gameState.wrongWords;
+    
+    // Update timer display with stage info
+    const timerParent = timerDisplay.parentElement;
+    timerParent.innerHTML = `<span>Stage ${stage.level}</span><span id="timer">${gameState.timeRemaining}</span>s`;
+    document.getElementById('timer').textContent = gameState.timeRemaining;
 }
 
-// 메인 화면으로 돌아가기
+// Go home
 function goHome() {
     resultScreen.classList.remove('active');
     mainScreen.classList.add('active');
     userInput.disabled = false;
     bestScoreDisplay.textContent = gameState.bestScore;
+    console.log(`\n=== DELTA: Going Home ===\n`);
 }
